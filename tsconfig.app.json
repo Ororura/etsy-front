@@ -25,7 +25,8 @@
       "app/*": ["./src/ui/app/*"],
       "assets/*": ["./src/ui/assets/*"],
       "core/*": ["./src/core/*"],
-      "services/*": ["./src/ui/services/*"]
+      "services/*": ["./src/ui/services/*"],
+      "pages/*": ["./src/ui/pages/*"]
     }
   },
   "include": ["src"]
