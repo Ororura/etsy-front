@@ -24,7 +24,7 @@
       "components/*": ["./src/ui/components/*"],
       "app/*": ["./src/ui/app/*"],
       "assets/*": ["./src/ui/assets/*"],
-      "core/*": ["./src/ui/core/*"],
+      "core/*": ["./src/core/*"],
       "services/*": ["./src/ui/services/*"]
     }
   },
