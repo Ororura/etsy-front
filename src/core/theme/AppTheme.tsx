@@ -8,7 +8,7 @@ interface AppThemeProps {
   themeComponents?: ThemeOptions['components'];
 }
 
-const AppTheme: FC<AppThemeProps> = ({ children, disableCustomTheme }: AppThemeProps) => {
+const AppTheme: FC<AppThemeProps> = ({ children, disableCustomTheme }) => {
   const theme = useMemo(() => {
     return disableCustomTheme
       ? {}

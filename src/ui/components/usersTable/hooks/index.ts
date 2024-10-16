@@ -1,0 +1,1 @@
+export { useUserTable } from './hooks';

@@ -1,7 +1,9 @@
 import { FC } from 'react';
 
+import { UserTable } from 'components/usersTable/ui/UserTable';
+
 const Main: FC = () => {
-  return <div>Main</div>;
+  return <UserTable />;
 };
 
 export { Main };
