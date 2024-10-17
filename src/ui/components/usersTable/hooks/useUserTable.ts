@@ -7,41 +7,12 @@ import {
   GridRowModel,
   GridRowsProp,
 } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { UserType } from '../types';
 
-const initialRows: GridRowsProp = [
-  {
-    id: 1,
-    userId: 7145120124,
-    hwid: '207ba29bfe606092ac81bcf444791c7ec489d60eef77afc748437dce90ccbd1e',
-    pdfMaker: true,
-    parser: true,
-    sender: true,
-    extraParser: true,
-  },
-  {
-    id: 2,
-    userId: 7145120125,
-    hwid: '307ba29bfe606092ac81bcf444791c7ec489d60eef77afc748437dce90ccbd2e',
-    pdfMaker: true,
-    parser: false,
-    sender: true,
-    extraParser: false,
-  },
-  {
-    id: 3,
-    userId: 7145120126,
-    hwid: '407ba29bfe606092ac81bcf444791c7ec489d60eef77afc748437dce90ccbd3e',
-    pdfMaker: false,
-    parser: true,
-    sender: false,
-    extraParser: true,
-  },
-];
-
-const useUserTable = () => {
-  const [rows, setRows] = useState(initialRows);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+const useUserTable = (initialRows: UserType[]) => {
+  const [rows, setRows] = useState<GridRowsProp>(initialRows);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -58,7 +29,7 @@ const useUserTable = () => {
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
-    setRows(rows.filter((row) => row.id !== id));
+    setRows(rows.filter((row) => row.user_id !== id));
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -67,9 +38,9 @@ const useUserTable = () => {
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
 
-    const editedRow = rows.find((row) => row.id === id);
+    const editedRow = rows.find((row) => row.user_id === id);
     if (editedRow!.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
+      setRows(rows.filter((row) => row.user_id !== id));
     }
   };
 
@@ -85,8 +56,8 @@ const useUserTable = () => {
 
   return {
     rows,
-		setRows,
-		setRowModesModel,
+    setRows,
+    setRowModesModel,
     rowModesModel,
     handleEditClick,
     handleSaveClick,
