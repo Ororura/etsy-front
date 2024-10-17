@@ -8,10 +8,12 @@ import {
   GridRowsProp,
 } from '@mui/x-data-grid';
 import { useState } from 'react';
-import { UserType } from '../types';
+import { useStore } from '@tanstack/react-store';
+import { userStore } from 'core/store';
 
-const useUserTable = (initialRows: UserType[]) => {
-  const [rows, setRows] = useState<GridRowsProp>(initialRows);
+const useUserTable = () => {
+  const usersData = useStore(userStore, (state) => state['users']);
+  const [rows, setRows] = useState<GridRowsProp>(usersData);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {

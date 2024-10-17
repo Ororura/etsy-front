@@ -1,15 +1,29 @@
 import Box from '@mui/material/Box';
-import { DataGrid, GridRowsProp, GridSlots } from '@mui/x-data-grid';
-import { FC } from 'react';
+import { DataGrid, GridSlots } from '@mui/x-data-grid';
+import { FC, useEffect } from 'react';
 import { useUsersColumns, useUserTable } from '../hooks';
 import { EditToolbar } from 'components/editToolBar';
 import { useQuery } from '@tanstack/react-query';
-
+import { userStore } from 'core/store';
+import { UserType } from 'components/usersTable/types.ts';
 const UserTable: FC = () => {
-  const { isPending, error, data } = useQuery({
-    queryKey: ['repoData'],
-    queryFn: () => fetch('http://127.0.0.1:8000/get-all-users').then((res) => res.json()),
+  const { data } = useQuery<UserType[]>({
+    queryKey: ['get-all-users'],
   });
+
+  useEffect(() => {
+    if (data) {
+      updateUsersStore(data);
+    }
+  }, [data]);
+
+  const updateUsersStore = (users: UserType[]) => {
+    userStore.setState(() => {
+      return {
+        ['users']: users,
+      };
+    });
+  };
 
   const { handleRowEditStop, handleRowModesModelChange, processRowUpdate, rowModesModel, setRowModesModel, setRows } =
     useUserTable();
@@ -30,7 +44,7 @@ const UserTable: FC = () => {
       }}
     >
       <DataGrid
-        rows={data as GridRowsProp[]}
+        rows={data}
         columns={columns}
         editMode='row'
         getRowId={(row) => row.user_id}
