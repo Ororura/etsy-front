@@ -10,7 +10,7 @@ export default defineConfig({
       app: path.resolve(__dirname, './src/ui/app'),
       assets: path.resolve(__dirname, './src/ui/assets'),
       core: path.resolve(__dirname, './src/core'),
-      services: path.resolve(__dirname, './src/ui/services'),
+      services: path.resolve(__dirname, './src/services'),
       pages: path.resolve(__dirname, './src/ui/pages'),
     },
   },

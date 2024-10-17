@@ -25,7 +25,7 @@
       "app/*": ["./src/ui/app/*"],
       "assets/*": ["./src/ui/assets/*"],
       "core/*": ["./src/core/*"],
-      "services/*": ["./src/ui/services/*"],
+      "services/*": ["./src/services/*"],
       "pages/*": ["./src/ui/pages/*"]
     }
   },
