@@ -7,9 +7,18 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { useUserTable } from '.';
 
 const useUsersColumns = () => {
-  const { handleSaveClick, handleCancelClick, handleEditClick, rowModesModel, handleDeleteClick } = useUserTable();
+  const { rowModesModel, userHandlers } = useUserTable();
   const columns: GridColDef[] = [
-    { field: 'userId', headerName: 'Telegram ID', width: 120, editable: false },
+    {
+      field: 'user_id',
+      headerName: 'Telegram Id',
+      type: 'number',
+      width: 250,
+      valueFormatter: (value) => value,
+      align: 'left',
+      headerAlign: 'left',
+      editable: true,
+    },
     {
       field: 'hwid',
       headerName: 'HWID',
@@ -64,13 +73,13 @@ const useUsersColumns = () => {
               sx={{
                 color: 'primary.main',
               }}
-              onClick={handleSaveClick(id)}
+              onClick={userHandlers.saveClick(id)}
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
               label='Cancel'
               className='textPrimary'
-              onClick={handleCancelClick(id)}
+              onClick={userHandlers.cancelClick(id)}
               color='inherit'
             />,
           ];
@@ -81,10 +90,15 @@ const useUsersColumns = () => {
             icon={<EditIcon />}
             label='Edit'
             className='textPrimary'
-            onClick={handleEditClick(id)}
+            onClick={userHandlers.editClick(id)}
             color='inherit'
           />,
-          <GridActionsCellItem icon={<DeleteIcon />} label='Delete' onClick={handleDeleteClick(id)} color='inherit' />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label='Delete'
+            onClick={userHandlers.deleteClick(id)}
+            color='inherit'
+          />,
         ];
       },
     },

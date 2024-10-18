@@ -5,70 +5,65 @@ import {
   GridRowId,
   GridRowModes,
   GridRowModel,
-  GridRowsProp,
 } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useStore } from '@tanstack/react-store';
 import { userStore } from 'core/store';
+import { UserRowsType, UserType } from 'components/usersTable/types.ts';
 
 const useUserTable = () => {
-  const usersData = useStore(userStore, (state) => state['users']);
-  const [rows, setRows] = useState<GridRowsProp>(usersData);
+  const usersData = useStore(userStore, (state) => state['users']) as UserRowsType[];
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
-  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
-    }
+  const changeData = (data: UserRowsType[]) => {
+    userStore.setState(() => ({
+      ['users']: data,
+    }));
   };
 
-  const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
+  const userHandlers = {
+    rowEditStop: ((params, event) => {
+      if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+        event.defaultMuiPrevented = true;
+      }
+    }) as GridEventListener<'rowEditStop'>,
+    editClick: (id: GridRowId) => () => {
+      setRowModesModel((prev) => ({ ...prev, [id]: { mode: GridRowModes.Edit } }));
+    },
+    saveClick: (id: GridRowId) => () => {
+      setRowModesModel((prev) => ({ ...prev, [id]: { mode: GridRowModes.View } }));
+    },
+    deleteClick: (id: GridRowId) => () => {
+      changeData(usersData.filter((row) => row.user_id !== id));
+    },
+    cancelClick: (id: GridRowId) => () => {
+      setRowModesModel((prev) => ({
+        ...prev,
+        [id]: { mode: GridRowModes.View, ignoreModifications: true },
+      }));
 
-  const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id: GridRowId) => () => {
-    setRows(rows.filter((row) => row.user_id !== id));
-  };
-
-  const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.user_id === id);
-    if (editedRow!.isNew) {
-      setRows(rows.filter((row) => row.user_id !== id));
-    }
-  };
-
-  const processRowUpdate = (newRow: GridRowModel) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
-  };
-
-  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-    setRowModesModel(newRowModesModel);
+      const editedRow = usersData.find((row) => row.user_id === id);
+      if (editedRow?.isNew) {
+        changeData(usersData.filter((row) => row.user_id !== id));
+      }
+    },
+    processRowUpdate: (newRow: GridRowModel) => {
+      const updatedRow = { ...newRow, isNew: false } as UserRowsType;
+      changeData(usersData.map((row) => (row.user_id === newRow.user_id ? updatedRow : row)));
+      return updatedRow;
+    },
+    rowModesModelChange: (newRowModesModel: GridRowModesModel) => {
+      setRowModesModel(newRowModesModel);
+    },
   };
 
   return {
-    rows,
-    setRows,
+    userHandlers,
     setRowModesModel,
     rowModesModel,
-    handleEditClick,
-    handleSaveClick,
-    handleDeleteClick,
-    handleCancelClick,
-    handleRowEditStop,
-    processRowUpdate,
-    handleRowModesModelChange,
+    changeData,
   };
 };
 
+export type { UserType };
 export { useUserTable };

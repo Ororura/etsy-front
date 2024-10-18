@@ -7,4 +7,7 @@ type UserType = {
   extra_parser: boolean;
 };
 
-export type { UserType };
+// Определение для строк данных
+type UserRowsType = UserType & { isNew?: boolean };
+
+export type { UserType, UserRowsType };

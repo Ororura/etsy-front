@@ -6,4 +6,10 @@ const defaultQueryFn = async ({ queryKey }: QueryFunctionContext) => {
   return data;
 };
 
-export { defaultQueryFn };
+const usersApi = {
+  getUserData: async <T>() => {
+    return await axios.get<T>('http://127.0.0.1:8000/get-all-users');
+  },
+};
+
+export { defaultQueryFn, usersApi };

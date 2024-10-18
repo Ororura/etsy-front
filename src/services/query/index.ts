@@ -1,1 +1,1 @@
-export { defaultQueryFn } from './queries.ts';
+export { defaultQueryFn, usersApi } from './queries.ts';
