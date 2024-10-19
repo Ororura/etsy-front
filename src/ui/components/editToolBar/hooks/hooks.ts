@@ -2,14 +2,21 @@ import { useCallback } from 'react';
 import { EditToolbarProps } from '../types';
 import { GridRowModes } from '@mui/x-data-grid';
 
-const useHandlerClick = ({ setRows, setRowModesModel }: EditToolbarProps) => {
+const useHandlerClick = ({ updateData, setRowModesModel, userId }: EditToolbarProps) => {
   const handleClick = useCallback(() => {
-    setRows((oldRows) => [...oldRows, { userId: '', hwid: '', pdfMaker: '', parser: '', sender: '', extraParser: '' }]);
+    updateData({
+      user_id: Number(userId),
+      hwid: '',
+      pdfmaker: false,
+      parser: false,
+      sender: false,
+      extra_parser: false,
+    });
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [1]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+      [userId]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
     }));
-  }, [setRows, setRowModesModel]);
+  }, [updateData, setRowModesModel, userId]);
   return { handleClick };
 };
 

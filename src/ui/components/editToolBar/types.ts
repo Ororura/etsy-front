@@ -1,8 +1,10 @@
-import { GridRowsProp, GridRowModesModel } from '@mui/x-data-grid';
+import { GridRowModesModel } from '@mui/x-data-grid';
+import { UserRowsType } from 'components/usersTable/types.ts';
 
 type EditToolbarProps = {
-  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+  updateData: (data: UserRowsType) => void;
   setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
+  userId: string;
 };
 
 export type { EditToolbarProps };

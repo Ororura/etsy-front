@@ -6,7 +6,7 @@ import { EditToolbar } from 'components/editToolBar';
 import { useStore } from '@tanstack/react-store';
 import { userStore } from 'core/store';
 const UserTable: FC = () => {
-  const { userHandlers, rowModesModel, setRowModesModel, changeData } = useUserTable();
+  const { userHandlers, rowModesModel, setRowModesModel, updateData } = useUserTable();
   useGetUsers();
 
   const { columns } = useUsersColumns();
@@ -40,7 +40,7 @@ const UserTable: FC = () => {
           toolbar: EditToolbar as GridSlots['toolbar'],
         }}
         slotProps={{
-          toolbar: { changeData, setRowModesModel },
+          toolbar: { updateData, setRowModesModel }, // Pass setRows here
         }}
       />
     </Box>
