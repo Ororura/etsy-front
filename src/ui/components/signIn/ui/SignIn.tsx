@@ -10,7 +10,6 @@ import { ForgotPassword } from 'components/forgotPassword';
 import { useSubmit } from 'components/signIn';
 import { FC } from 'react';
 import { AppTheme } from 'core/theme';
-import { ColorModeSelect } from 'components/colorModeSelect';
 
 type Props = {
   disableCustomTheme?: boolean;
@@ -31,7 +30,6 @@ const SignIn: FC<Props> = ({ disableCustomTheme }) => {
     <AppTheme disableCustomTheme={disableCustomTheme}>
       <CssBaseline enableColorScheme />
       <SignInContainer direction='column' justifyContent='space-between'>
-        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} variant={'standard'} />
         <Card variant='outlined'>
           <Typography component='h1' variant='h4' sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}>
             Sign in
@@ -48,21 +46,20 @@ const SignIn: FC<Props> = ({ disableCustomTheme }) => {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor='email'>Email</FormLabel>
+              <FormLabel htmlFor='login'>Login</FormLabel>
               <TextField
                 error={emailError}
                 helperText={emailErrorMessage}
-                id='email'
-                type='email'
-                name='email'
-                placeholder='your@email.com'
-                autoComplete='email'
+                id='login'
+                type='text'
+                name='login'
+                placeholder='login'
                 autoFocus
                 required
                 fullWidth
                 variant='outlined'
                 color={emailError ? 'error' : 'primary'}
-                sx={{ ariaLabel: 'email' }}
+                sx={{ ariaLabel: 'name' }}
               />
             </FormControl>
             <FormControl>

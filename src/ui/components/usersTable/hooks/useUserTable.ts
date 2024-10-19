@@ -14,6 +14,7 @@ import { UserRowsType } from 'components/usersTable/types.ts';
 const useUserTable = () => {
   const usersData = useStore(userStore, (state) => state['users']) as UserRowsType[];
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const accessToken = localStorage.getItem('accessToken');
 
   const changeData = (data: UserRowsType[]) => {
     userStore.setState(() => ({
@@ -26,10 +27,11 @@ const useUserTable = () => {
       users: [...state.users, data],
     }));
     if (data) {
-      fetch('http://127.0.0.1:8000/create-user', {
+      fetch('http://193.233.254.138/create-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           telegram_id: data.user_id,
@@ -64,10 +66,11 @@ const useUserTable = () => {
     },
     deleteClick: (id: GridRowId) => () => {
       changeData(usersData.filter((row) => row.user_id !== id));
-      fetch('http://127.0.0.1:8000/change-user-data', {
+      fetch('http://193.233.254.138/change-user-data', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           user_id: id,
@@ -87,12 +90,14 @@ const useUserTable = () => {
     },
     processRowUpdate: (newRow: GridRowModel) => {
       const updatedRow = { ...newRow, isNew: false } as UserRowsType;
+
       changeData(usersData.map((row) => (row.user_id === newRow.user_id ? updatedRow : row)));
       if (updatedRow) {
-        fetch('http://127.0.0.1:8000/change-user-data', {
+        fetch('http://193.233.254.138/change-user-data', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
             user_id: updatedRow.user_id,

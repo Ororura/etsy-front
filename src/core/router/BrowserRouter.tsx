@@ -8,9 +8,9 @@ const routes: RouteObject[] = [
     element: <Main />,
   },
   {
-    path: '/auth',
-    element: <Auth/>
-  }
+    path: '/login',
+    element: <Auth />,
+  },
 ];
 
 const router = createBrowserRouter(routes);
