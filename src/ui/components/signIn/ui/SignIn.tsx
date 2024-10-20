@@ -6,7 +6,6 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Card, SignInContainer } from './styles.ts';
-import { ForgotPassword } from 'components/forgotPassword';
 import { useSubmit } from 'components/signIn';
 import { FC } from 'react';
 import { AppTheme } from 'core/theme';
@@ -16,16 +15,8 @@ type Props = {
 };
 
 const SignIn: FC<Props> = ({ disableCustomTheme }) => {
-  const {
-    open,
-    handleClose,
-    handleSubmit,
-    emailErrorMessage,
-    passwordErrorMessage,
-    emailError,
-    validateInputs,
-    passwordError,
-  } = useSubmit();
+  const { handleSubmit, emailErrorMessage, passwordErrorMessage, emailError, validateInputs, passwordError } =
+    useSubmit();
   return (
     <AppTheme disableCustomTheme={disableCustomTheme}>
       <CssBaseline enableColorScheme />
@@ -78,7 +69,6 @@ const SignIn: FC<Props> = ({ disableCustomTheme }) => {
                 color={passwordError ? 'error' : 'primary'}
               />
             </FormControl>
-            <ForgotPassword open={open} handleClose={handleClose} />
             <Button type='submit' fullWidth variant='contained' onClick={validateInputs}>
               Sign in
             </Button>

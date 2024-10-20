@@ -9,12 +9,16 @@ import {
 import { useState } from 'react';
 import { useStore } from '@tanstack/react-store';
 import { userStore } from 'core/store';
-import { UserRowsType } from 'components/usersTable/types.ts';
+import { DeleteUserType, UserRowsType } from 'components/usersTable/types.ts';
+import { usersApi } from 'services/query';
+import { useMutateData } from 'components/usersTable/hooks/useMutateData.ts';
 
 const useUserTable = () => {
   const usersData = useStore(userStore, (state) => state['users']) as UserRowsType[];
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const accessToken = localStorage.getItem('accessToken');
+  const deleteData = useMutateData<DeleteUserType>(usersApi.deleteUserData);
+  const updateData = useMutateData<UserRowsType>(usersApi.updateUserData);
 
   const changeData = (data: UserRowsType[]) => {
     userStore.setState(() => ({
@@ -22,7 +26,7 @@ const useUserTable = () => {
     }));
   };
 
-  const updateData = (data: UserRowsType) => {
+  const createUser = (data: UserRowsType) => {
     userStore.setState((state) => ({
       users: [...state.users, data],
     }));
@@ -66,16 +70,7 @@ const useUserTable = () => {
     },
     deleteClick: (id: GridRowId) => () => {
       changeData(usersData.filter((row) => row.user_id !== id));
-      fetch('http://193.233.254.138/change-user-data', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          user_id: id,
-        }),
-      });
+      deleteData.mutate({ user_id: Number(id) });
     },
     cancelClick: (id: GridRowId) => () => {
       setRowModesModel((prev) => ({
@@ -93,33 +88,16 @@ const useUserTable = () => {
 
       changeData(usersData.map((row) => (row.user_id === newRow.user_id ? updatedRow : row)));
       if (updatedRow) {
-        fetch('http://193.233.254.138/change-user-data', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({
-            user_id: updatedRow.user_id,
-            hwid: updatedRow.hwid,
-            pdfmaker: updatedRow.pdfmaker,
-            parser: updatedRow.parser,
-            sender: updatedRow.sender,
-            extra_parser: updatedRow.extra_parser,
-          }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('Error updating user data');
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log('Success:', data);
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
+        const data: UserRowsType = {
+          user_id: updatedRow.user_id,
+          hwid: updatedRow.hwid,
+          pdfmaker: updatedRow.pdfmaker,
+          parser: updatedRow.parser,
+          sender: updatedRow.sender,
+          extra_parser: updatedRow.extra_parser,
+        };
+
+        updateData.mutate(data);
       }
       return updatedRow;
     },
@@ -133,7 +111,7 @@ const useUserTable = () => {
     setRowModesModel,
     rowModesModel,
     changeData,
-    updateData,
+    updateData: createUser,
   };
 };
 

@@ -3,20 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const useSubmit = () => {
-  const [open, setOpen] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const navigate = useNavigate();
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -74,12 +65,9 @@ const useSubmit = () => {
     return isValid;
   };
   return {
-    handleClickOpen,
-    handleClose,
     handleSubmit,
     validateInputs,
     passwordErrorMessage,
-    open,
     emailError,
     emailErrorMessage,
     passwordError,

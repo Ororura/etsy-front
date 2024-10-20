@@ -8,16 +8,16 @@ const useGetUsers = () => {
     queryKey: ['users'],
     queryFn: async () => {
       try {
-        const { data } = await usersApi.getUserData<UserType[]>();
-        if (data && data.length > 0) {
+        const response = await usersApi.getUserData<UserType[]>();
+        if (response && response.data && response.data.length > 0) {
           userStore.setState(() => ({
-            ['users']: data,
+            ['users']: response.data,
           }));
         } else {
           return [];
         }
 
-        return data;
+        return response.data;
       } catch (error) {
         console.error('Ошибка получения данных:', error);
         throw error;

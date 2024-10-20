@@ -21,18 +21,16 @@ const defaultQueryFn = async ({ queryKey }: QueryFunctionContext) => {
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
-      clearAccessToken(); // Clear the token if it is invalid
+      clearAccessToken();
       console.error('Token is invalid, cleared from storage.');
     }
-    throw error; // Rethrow the error for further handling if necessary
+    throw error;
   }
 };
 
-// API object with authorization for specific endpoints and error handling
 const usersApi = {
   getUserData: async <T>() => {
     const token = getAccessToken();
-
     try {
       return await axios.get<T>('http://193.233.254.138/get-all-users', {
         headers: {
@@ -41,10 +39,46 @@ const usersApi = {
       });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        clearAccessToken(); // Clear the token if it is invalid
+        clearAccessToken();
         console.error('Token is invalid, cleared from storage.');
       }
-      throw error; // Rethrow the error for further handling if necessary
+    }
+  },
+
+  updateUserData: async <T>(data: T) => {
+    const token = getAccessToken();
+    try {
+      return await axios.post(
+        'http://193.233.254.138/change-user-data',
+        data, // данные передаются вторым параметром
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }, // заголовки передаются в отдельном объекте
+        },
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        clearAccessToken();
+        console.error('Token is invalid, cleared from storage.');
+      }
+    }
+  },
+
+  deleteUserData: async <T>(data: T) => {
+    const token = getAccessToken();
+    try {
+      return await axios.delete(`http://193.233.254.138/change-user-data`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: data,
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        clearAccessToken();
+        console.error('Token is invalid, cleared from storage.');
+      }
     }
   },
 };

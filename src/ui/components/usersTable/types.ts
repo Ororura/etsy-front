@@ -7,7 +7,10 @@ type UserType = {
   extra_parser: boolean;
 };
 
-// Определение для строк данных
 type UserRowsType = UserType & { isNew?: boolean };
 
-export type { UserType, UserRowsType };
+type DeleteUserType = {
+  user_id: number;
+};
+
+export type { UserType, UserRowsType, DeleteUserType };
