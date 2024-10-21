@@ -4,7 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-	base: '/',
+  base: '/',
   resolve: {
     alias: {
       components: path.resolve(__dirname, './src/ui/components'),
@@ -13,6 +13,7 @@ export default defineConfig({
       core: path.resolve(__dirname, './src/core'),
       services: path.resolve(__dirname, './src/services'),
       pages: path.resolve(__dirname, './src/ui/pages'),
+      hoc: path.resolve(__dirname, './src/ui/hoc'),
     },
   },
 });

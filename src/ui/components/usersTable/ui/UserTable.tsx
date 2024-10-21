@@ -22,12 +22,12 @@ import { FC, useState } from 'react';
 import { useStore } from '@tanstack/react-store';
 import { userStore } from 'core/store';
 import { useGetUsers, useMutateData } from 'components/usersTable/hooks';
-import { CreateUserType, DeleteUserType, UserRowsType } from 'components/usersTable/types.ts';
+import { CreateUserType, DeleteUserType, UserRowsType } from 'components/usersTable';
 import { usersApi } from 'services/query';
 import TextField from '@mui/material/TextField';
 import { AxiosResponse } from 'axios';
 import { UseMutationResult } from '@tanstack/react-query';
-import { useRedirectOnUnauthorized } from '../../../hoc/useRedirectOnUnauthorized.ts';
+import { useRedirectOnUnauthorized } from 'hoc/useRedirectOnUnauthorized';
 
 interface EditToolbarProps {
   handlerChangeStateData: (data: UserRowsType[]) => void;

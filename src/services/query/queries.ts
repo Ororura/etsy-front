@@ -23,7 +23,7 @@ const defaultQueryFn = async ({ queryKey }: QueryFunctionContext) => {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       clearAccessToken();
       console.error('Token is invalid, cleared from storage.');
-      throw new Error('Unauthorized'); // Throw an error to handle it later
+      throw new Error('Unauthorized');
     }
     throw error;
   }
@@ -42,7 +42,7 @@ const usersApi = {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         clearAccessToken();
         console.error('Token is invalid, cleared from storage.');
-        throw new Error('Unauthorized'); // Throw an error to handle it later
+        throw new Error('Unauthorized');
       }
       throw error;
     }
@@ -58,7 +58,7 @@ const usersApi = {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         clearAccessToken();
         console.error('Token is invalid, cleared from storage.');
-        throw new Error('Unauthorized'); // Throw an error to handle it later
+        throw new Error('Unauthorized');
       }
       throw error;
     }
@@ -67,7 +67,7 @@ const usersApi = {
   updateUserData: async <T>(data: T) => {
     const token = getAccessToken();
     try {
-      return await axios.post('http://localhost:8000/change-user-data', data, {
+      return await axios.post('http://193.233.254.138/change-user-data', data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
