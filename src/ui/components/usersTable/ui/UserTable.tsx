@@ -152,7 +152,6 @@ export const UserTable: FC = () => {
         sender: updatedRow.sender,
         extra_parser: updatedRow.extra_parser,
       };
-      console.log(data);
       updateData.mutate(data);
     }
     return updatedRow;

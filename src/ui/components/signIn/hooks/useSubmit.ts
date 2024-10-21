@@ -20,15 +20,12 @@ const useSubmit = () => {
     const password = formData.get('password');
 
     try {
-      const response = await axios.post('http://193.233.254.138/api/token/', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/token/`, {
         username,
         password,
       });
 
       const { access, refresh } = response.data;
-
-      console.log(response);
-
       localStorage.setItem('accessToken', access);
       localStorage.setItem('refreshToken', refresh);
 

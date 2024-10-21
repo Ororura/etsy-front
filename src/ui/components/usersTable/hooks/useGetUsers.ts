@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { UserType } from 'components/usersTable/types.ts'; // Обновите путь на актуальный
+import { UserType } from 'components/usersTable/types.ts';
 import { userStore } from 'core/store';
 import { usersApi } from 'services/query';
 
