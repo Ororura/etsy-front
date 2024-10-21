@@ -27,6 +27,7 @@ import { usersApi } from 'services/query';
 import TextField from '@mui/material/TextField';
 import { AxiosResponse } from 'axios';
 import { UseMutationResult } from '@tanstack/react-query';
+import { useRedirectOnUnauthorized } from '../../../hoc/useRedirectOnUnauthorized.ts';
 
 interface EditToolbarProps {
   handlerChangeStateData: (data: UserRowsType[]) => void;
@@ -94,7 +95,8 @@ function EditToolbar(props: EditToolbarProps) {
 }
 
 export const UserTable: FC = () => {
-  useGetUsers();
+  const { error } = useGetUsers();
+  useRedirectOnUnauthorized(error);
   const deleteData = useMutateData<DeleteUserType>(usersApi.deleteUserData);
   const updateData = useMutateData<UserRowsType>(usersApi.updateUserData);
   const createData = useMutateData<CreateUserType>(usersApi.createUser);

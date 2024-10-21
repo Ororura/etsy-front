@@ -23,6 +23,7 @@ const defaultQueryFn = async ({ queryKey }: QueryFunctionContext) => {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       clearAccessToken();
       console.error('Token is invalid, cleared from storage.');
+      throw new Error('Unauthorized'); // Throw an error to handle it later
     }
     throw error;
   }
@@ -41,7 +42,9 @@ const usersApi = {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         clearAccessToken();
         console.error('Token is invalid, cleared from storage.');
+        throw new Error('Unauthorized'); // Throw an error to handle it later
       }
+      throw error;
     }
   },
 
@@ -55,7 +58,9 @@ const usersApi = {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         clearAccessToken();
         console.error('Token is invalid, cleared from storage.');
+        throw new Error('Unauthorized'); // Throw an error to handle it later
       }
+      throw error;
     }
   },
 
@@ -71,7 +76,9 @@ const usersApi = {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         clearAccessToken();
         console.error('Token is invalid, cleared from storage.');
+        throw new Error('Unauthorized'); // Throw an error to handle it later
       }
+      throw error;
     }
   },
 
@@ -88,7 +95,9 @@ const usersApi = {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         clearAccessToken();
         console.error('Token is invalid, cleared from storage.');
+        throw new Error('Unauthorized'); // Throw an error to handle it later
       }
+      throw error;
     }
   },
 };
