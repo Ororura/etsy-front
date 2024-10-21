@@ -25,7 +25,7 @@ const refreshToken = async () => {
   }
 
   try {
-    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/token_refresh`, {
+    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/token/refresh/`, {
       refresh: refreshToken,
     });
     setAccessToken(data.access);
