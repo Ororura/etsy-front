@@ -4,6 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+	base: '/',
   resolve: {
     alias: {
       components: path.resolve(__dirname, './src/ui/components'),

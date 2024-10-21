@@ -49,7 +49,7 @@ const usersApi = {
     const token = getAccessToken();
     try {
       return await axios.post(
-        'http://193.233.254.138/change-user-data',
+        'http://localhost:8000/change-user-data',
         data, // данные передаются вторым параметром
         {
           headers: {
