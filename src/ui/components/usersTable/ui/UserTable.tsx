@@ -22,33 +22,26 @@ import { FC, useState } from 'react';
 import { useStore } from '@tanstack/react-store';
 import { userStore } from 'core/store';
 import { useGetUsers, useMutateData } from 'components/usersTable/hooks';
-import { DeleteUserType, UserRowsType } from 'components/usersTable/types.ts';
+import { CreateUserType, DeleteUserType, UserRowsType } from 'components/usersTable/types.ts';
 import { usersApi } from 'services/query';
 import TextField from '@mui/material/TextField';
+import { AxiosResponse } from 'axios';
+import { UseMutationResult } from '@tanstack/react-query';
 
 interface EditToolbarProps {
   handlerChangeStateData: (data: UserRowsType[]) => void;
   setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
+  createData: UseMutationResult<AxiosResponse | undefined, Error, CreateUserType, unknown>;
 }
 
 function EditToolbar(props: EditToolbarProps) {
-  const accessToken = localStorage.getItem('accessToken');
   const users = useStore(userStore, (state) => state['users']);
   const [userId, setUserId] = useState(0);
-  const { handlerChangeStateData, setRowModesModel } = props;
+  const { handlerChangeStateData, setRowModesModel, createData } = props;
 
   const createUser = (data: UserRowsType) => {
     if (data) {
-      fetch('http://193.233.254.138/create-user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          telegram_id: data.user_id,
-        }),
-      });
+      createData.mutate({ telegram_id: data.user_id });
     }
   };
 
@@ -85,6 +78,7 @@ function EditToolbar(props: EditToolbarProps) {
   return (
     <GridToolbarContainer>
       <TextField
+        sx={{ marginTop: '10px' }}
         label='User ID'
         variant='outlined'
         size='small'
@@ -103,6 +97,7 @@ export const UserTable: FC = () => {
   useGetUsers();
   const deleteData = useMutateData<DeleteUserType>(usersApi.deleteUserData);
   const updateData = useMutateData<UserRowsType>(usersApi.updateUserData);
+  const createData = useMutateData<CreateUserType>(usersApi.createUser);
   const users = useStore(userStore, (state) => state['users']);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
@@ -259,7 +254,6 @@ export const UserTable: FC = () => {
   return (
     <Box
       sx={{
-        marginTop: '10px',
         height: '100%',
         width: '100%',
         '& .actions': {
@@ -283,7 +277,7 @@ export const UserTable: FC = () => {
           toolbar: EditToolbar as GridSlots['toolbar'],
         }}
         slotProps={{
-          toolbar: { handlerChangeStateData, setRowModesModel },
+          toolbar: { handlerChangeStateData, setRowModesModel, createData },
         }}
       />
     </Box>

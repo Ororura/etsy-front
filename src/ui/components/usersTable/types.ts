@@ -13,4 +13,8 @@ type DeleteUserType = {
   user_id: number;
 };
 
-export type { UserType, UserRowsType, DeleteUserType };
+type CreateUserType = {
+  telegram_id: number;
+};
+
+export type { UserType, UserRowsType, DeleteUserType, CreateUserType };

@@ -45,18 +45,28 @@ const usersApi = {
     }
   },
 
+  createUser: async <T>(data: T) => {
+    const token = getAccessToken();
+    try {
+      return await axios.post('http://193.233.254.138/create-user', data, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        clearAccessToken();
+        console.error('Token is invalid, cleared from storage.');
+      }
+    }
+  },
+
   updateUserData: async <T>(data: T) => {
     const token = getAccessToken();
     try {
-      return await axios.post(
-        'http://localhost:8000/change-user-data',
-        data, // данные передаются вторым параметром
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }, // заголовки передаются в отдельном объекте
+      return await axios.post('http://localhost:8000/change-user-data', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         clearAccessToken();
