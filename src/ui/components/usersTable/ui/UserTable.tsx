@@ -27,7 +27,7 @@ import { usersApi } from 'services/query';
 import TextField from '@mui/material/TextField';
 import { AxiosResponse } from 'axios';
 import { UseMutationResult } from '@tanstack/react-query';
-import { useRedirectOnUnauthorized } from 'hoc/useRedirectOnUnauthorized';
+import { useRedirectOnUnauthorized } from 'core/router/hooks';
 
 interface EditToolbarProps {
   handlerChangeStateData: (data: UserRowsType[]) => void;
