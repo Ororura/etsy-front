@@ -1,6 +1,4 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
@@ -10,7 +8,6 @@ import {
   GridRowModes,
   DataGrid,
   GridColDef,
-  GridToolbarContainer,
   GridActionsCellItem,
   GridEventListener,
   GridRowId,
@@ -22,77 +19,69 @@ import { FC, useState } from 'react';
 import { useStore } from '@tanstack/react-store';
 import { userStore } from 'core/store';
 import { useGetUsers, useMutateData } from 'components/usersTable/hooks';
-import { CreateUserType, DeleteUserType, UserRowsType } from 'components/usersTable';
+import { CreateUserType, DeleteUserType, UpdateChance, UserRowsType } from 'components/usersTable';
 import { usersApi } from 'services/query';
-import TextField from '@mui/material/TextField';
-import { AxiosResponse } from 'axios';
-import { UseMutationResult } from '@tanstack/react-query';
 import { useRedirectOnUnauthorized } from 'core/router/hooks';
+import { EditToolbar } from 'components/editToolBar/ui';
 
-interface EditToolbarProps {
-  handlerChangeStateData: (data: UserRowsType[]) => void;
-  setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
-  createData: UseMutationResult<AxiosResponse | undefined, Error, CreateUserType, unknown>;
-}
+// function EditToolbar(props: EditToolbarProps) {
+//   const users = useStore(userStore, (state) => state['users']);
+//   const [userId, setUserId] = useState(0);
+//   const { handlerChangeStateData, setRowModesModel, createData } = props;
 
-function EditToolbar(props: EditToolbarProps) {
-  const users = useStore(userStore, (state) => state['users']);
-  const [userId, setUserId] = useState(0);
-  const { handlerChangeStateData, setRowModesModel, createData } = props;
+//   const createUser = (data: UserRowsType) => {
+//     if (data) {
+//       createData.mutate({ telegram_id: data.user_id });
+//     }
+//   };
 
-  const createUser = (data: UserRowsType) => {
-    if (data) {
-      createData.mutate({ telegram_id: data.user_id });
-    }
-  };
+//   const handleClick = () => {
+//     handlerChangeStateData([
+//       ...users,
+//       {
+//         user_id: userId,
+//         extra_parser: false,
+//         parser: false,
+//         hwid: '',
+//         pdfmaker: false,
+//         isNew: true,
+//         sender: true,
+//       },
+//     ]);
 
-  const handleClick = () => {
-    handlerChangeStateData([
-      ...users,
-      {
-        user_id: userId,
-        extra_parser: false,
-        parser: false,
-        hwid: '',
-        pdfmaker: false,
-        isNew: true,
-        sender: true,
-      },
-    ]);
+//     createUser({
+//       user_id: userId,
+//       extra_parser: false,
+//       parser: false,
+//       hwid: '',
+//       pdfmaker: false,
+//       isNew: true,
+//       sender: true,
+//     });
 
-    createUser({
-      user_id: userId,
-      extra_parser: false,
-      parser: false,
-      hwid: '',
-      pdfmaker: false,
-      isNew: true,
-      sender: true,
-    });
+//     setRowModesModel((oldModel) => ({
+//       ...oldModel,
+//       [userId]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+//     }));
+//   };
 
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [userId]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
-    }));
-  };
-
-  return (
-    <GridToolbarContainer>
-      <TextField
-        sx={{ marginTop: '10px' }}
-        label='User ID'
-        variant='outlined'
-        size='small'
-        value={userId}
-        onChange={(e) => setUserId(Number(e.target.value))}
-        style={{ marginRight: 8 }}
-      />
-      <Button color='primary' startIcon={<AddIcon />} onClick={handleClick}>
-        Add record
-      </Button>
-    </GridToolbarContainer>
-  );
-}
+//   return (
+//     <GridToolbarContainer>
+//       <TextField
+//         sx={{ marginTop: '10px' }}
+//         label='User ID'
+//         variant='outlined'
+//         size='small'
+//         value={userId}
+//         onChange={(e) => setUserId(Number(e.target.value))}
+//         style={{ marginRight: 8 }}
+//       />
+//       <Button color='primary' startIcon={<AddIcon />} onClick={handleClick}>
+//         Add record
+//       </Button>
+//     </GridToolbarContainer>
+//   );
+// }
 
 export const UserTable: FC = () => {
   const { error } = useGetUsers();
@@ -100,6 +89,7 @@ export const UserTable: FC = () => {
   const deleteData = useMutateData<DeleteUserType>(usersApi.deleteUserData);
   const updateData = useMutateData<UserRowsType>(usersApi.updateUserData);
   const createData = useMutateData<CreateUserType>(usersApi.createUser);
+	const updateChance = useMutateData<UpdateChance>(usersApi.changeChance)
   const users = useStore(userStore, (state) => state['users']);
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
 
@@ -151,6 +141,7 @@ export const UserTable: FC = () => {
         parser: updatedRow.parser,
         sender: updatedRow.sender,
         extra_parser: updatedRow.extra_parser,
+				subito: updatedRow.subito
       };
       updateData.mutate(data);
     }
@@ -205,6 +196,13 @@ export const UserTable: FC = () => {
     {
       field: 'extra_parser',
       headerName: 'Extra Parser',
+      width: 100,
+      editable: true,
+      type: 'boolean',
+    },
+    {
+      field: 'subito',
+      headerName: 'Subito',
       width: 100,
       editable: true,
       type: 'boolean',
@@ -278,7 +276,7 @@ export const UserTable: FC = () => {
           toolbar: EditToolbar as GridSlots['toolbar'],
         }}
         slotProps={{
-          toolbar: { handlerChangeStateData, setRowModesModel, createData },
+          toolbar: { handlerChangeStateData, setRowModesModel, createData, updateChance },
         }}
       />
     </Box>

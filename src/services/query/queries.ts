@@ -94,6 +94,35 @@ const usersApi = {
       throw error;
     }
   },
+	
+  changeChance: async <T>(body: T) => {
+    let token = getAccessToken();
+    try {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/generate-url`, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        try {
+          token = await refreshToken();
+          const { data } = await axios.post(`${import.meta.env.VITE_API_URL}`, body, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          return data;
+        } catch (refreshError) {
+          clearTokens();
+          console.error('Failed to refresh token, cleared tokens.', refreshError);
+          throw new Error('Unauthorized');
+        }
+      }
+      throw error;
+    }
+  },
 
   createUser: async <T>(data: T) => {
     let token = getAccessToken();

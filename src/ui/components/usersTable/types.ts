@@ -5,6 +5,7 @@ type UserType = {
   parser: boolean;
   sender: boolean;
   extra_parser: boolean;
+	subito: boolean;
 };
 
 type UserRowsType = UserType & { isNew?: boolean };
@@ -17,4 +18,8 @@ type CreateUserType = {
   telegram_id: number;
 };
 
-export type { UserType, UserRowsType, DeleteUserType, CreateUserType };
+type UpdateChance = {
+  chance: number;
+};
+
+export type { UserType, UserRowsType, DeleteUserType, CreateUserType, UpdateChance };

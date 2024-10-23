@@ -7,6 +7,7 @@ type UserStore = {
   parser: boolean;
   sender: boolean;
   extra_parser: boolean;
+	subito: boolean;
 };
 
 type UserRowsType = UserStore & { isNew?: boolean };
