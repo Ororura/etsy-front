@@ -62,10 +62,10 @@ const EditToolbar: FC<EditToolbarProps> = ({ handlerChangeStateData, setRowModes
       <Button color='primary' startIcon={<AddIcon />} onClick={handleClick}>
         Add Record
       </Button>
-      {/* <TextField label='Chance' variant='outlined' size='small' onChange={(e) => setChance(Number(e.target.value))} />
+      <TextField label='Chance' variant='outlined' size='small' onChange={(e) => setChance(Number(e.target.value))} />
       <Button color='primary' startIcon={<Edit />} onClick={handleChangeChance}>
         Set Chance
-      </Button> */}
+      </Button>
     </GridToolbarContainer>
   );
 };
