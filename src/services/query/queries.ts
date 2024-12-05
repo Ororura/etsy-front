@@ -1,5 +1,6 @@
 import { QueryFunctionContext } from '@tanstack/react-query';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const getAccessToken = () => localStorage.getItem('accessToken');
 const getRefreshToken = () => localStorage.getItem('refreshToken');
@@ -33,6 +34,7 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const navigate = useNavigate();
     if (axios.isAxiosError(error) && error.response?.status === 401 && error.config) {
       try {
         const newToken = await refreshToken();
@@ -40,6 +42,7 @@ api.interceptors.response.use(
         return api.request(error.config);
       } catch (refreshError) {
         clearTokens();
+        navigate('/login');
         console.error(refreshError);
         throw new Error('Unauthorized');
       }
