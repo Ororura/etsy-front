@@ -16,6 +16,16 @@ const config: AxiosRequestConfig = {
 };
 
 const messageService = {
+  getMessage: async (room: string) => {
+    try {
+      const response: AxiosResponse<MessageType[]> = await client.get(
+        `/get-messages/${room}`
+      );
+      return response.data;
+    } catch (e) {
+      console.error(e);
+    }
+  },
   sendMessage: async (data: MessageType) => {
     try {
       const response: AxiosResponse = await client.post("/send", data, config);

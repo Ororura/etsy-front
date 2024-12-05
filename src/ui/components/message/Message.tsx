@@ -1,38 +1,39 @@
 import { FC, useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useSubscription } from "react-stomp-hooks";
+import { messageService } from "../../../services/api";
+import { MessageType } from "../../../types";
 
-const socket = io("http://localhost:5000");
+type Props = {
+  room: string | null;
+};
 
-const Message: FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-
+const Message: FC<Props> = ({ room }) => {
+  const [messages, setMessages] = useState<MessageType[]>([]);
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected to socket server.");
-    });
-
-    socket.on("new_message", (data: { message: string }) => {
-      console.log("New message received:", data.message);
-      setMessages((prevMessages) => [...prevMessages, data.message]);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Disconnected from socket server.");
-    });
-
-    return () => {
-      socket.off("new_message");
-      socket.off("connect");
-      socket.off("disconnect");
-    };
-  }, []);
+    (async () => {
+      if (room) {
+        const response = await messageService.getMessage(room);
+        if (response) {
+          setMessages(response);
+        }
+      }
+    })();
+  }, [room]);
+	
+  useSubscription(`/topic/message/${room}`, (message) => {
+    const response: MessageType = JSON.parse(message.body);
+    setMessages([...messages, response]);
+  });
 
   return (
     <div>
       <h2>Новое сообщение:</h2>
       <ul>
         {messages.map((message, index) => (
-          <li key={index}>{message}</li>
+          <li key={index}>
+            <p style={{ fontWeight: "bold" }}>{message.sender}</p>
+            <span>{message.content}</span>
+          </li>
         ))}
       </ul>
     </div>

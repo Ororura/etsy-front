@@ -1,7 +1,7 @@
 type MessageType = {
-  message: string;
-  telegramId: string;
-  user: number;
+  content: string;
+  room: string;
+  sender: string;
 };
 
 export type { MessageType };

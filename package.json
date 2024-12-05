@@ -15,6 +15,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.2",
     "react-router": "^7.0.1",
+    "react-stomp-hooks": "^3.0.1",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
