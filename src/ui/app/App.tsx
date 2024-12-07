@@ -5,7 +5,7 @@ import { StompSessionProvider } from "react-stomp-hooks";
 
 function App() {
   return (
-    <StompSessionProvider url='http://localhost:8080/ws'>
+    <StompSessionProvider url='http://62.60.237.82:8080/ws'>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />} />

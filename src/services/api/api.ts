@@ -6,7 +6,7 @@ import axios, {
 import { MessageType } from "../../types";
 
 const client = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://62.60.237.82:8080",
 });
 
 const config: AxiosRequestConfig = {
