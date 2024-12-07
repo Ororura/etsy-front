@@ -16,6 +16,7 @@ const Message: FC<Props> = ({ room }) => {
         if (response) {
           setMessages(response);
         }
+				console.log(response);
       }
     })();
   }, [room]);
@@ -31,7 +32,7 @@ const Message: FC<Props> = ({ room }) => {
       <ul>
         {messages.map((message, index) => (
           <li key={index}>
-            <p style={{ fontWeight: "bold" }}>{message.sender}</p>
+            <p style={{ fontWeight: "bold" }}>{message.type}</p>
             <span>{message.content}</span>
           </li>
         ))}

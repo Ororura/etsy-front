@@ -3,7 +3,7 @@ type MessageType = {
   type: string;
   sender: string;
   room: string;
-	telegramId: string
+  url: string | null;
 };
 
 export type { MessageType };

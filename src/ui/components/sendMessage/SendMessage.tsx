@@ -1,43 +1,40 @@
-import { FC, useState } from "react";
+import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { MessageType } from "../../../types";
 import { Message } from "../message";
 import { useStompClient } from "react-stomp-hooks";
+import { useSearchParams } from "react-router";
 
 const SendMessage: FC = () => {
   const { register, handleSubmit } = useForm<MessageType>();
-  const [room, setRoom] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const url = searchParams.get("name");
+
+  useEffect(() => {
+    console.log(url);
+  }, [url]);
+
   const stompClient = useStompClient();
 
   const handlerSendMessage: SubmitHandler<MessageType> = async (data) => {
     data.type = "WEB";
-		data.sender = "USER";
-		
-    if (room != null) {
-      data.room = room;
+    if (url != null) {
+      data.room = url;
     }
     const payload = JSON.stringify(data);
     if (stompClient) {
-      stompClient.publish({ destination: `/app/send/${room}`, body: payload });
+      stompClient.publish({ destination: `/app/send/${url}`, body: payload });
     }
   };
 
   return (
     <div>
-      <h1>Номер комнаты: {room}</h1>
-      <input
-        type="number"
-        placeholder="Введите номер комнаты"
-        onChange={(e) => {
-          setRoom(e.currentTarget.value);
-        }}
-      />
+      <h1>Номер комнаты: {url}</h1>
       <form onSubmit={handleSubmit(handlerSendMessage)}>
         <input placeholder="Введите сообщение" {...register("content")} />
-        <input placeholder="Введите отправителя" {...register("sender")} />
         <input type="submit" />
       </form>
-      <Message room={room} />
+      <Message room={url} />
     </div>
   );
 };
