@@ -11,6 +11,8 @@ const SendMessage: FC = () => {
 
   const handlerSendMessage: SubmitHandler<MessageType> = async (data) => {
     data.type = "WEB";
+		data.sender = "USER";
+		
     if (room != null) {
       data.room = room;
     }
