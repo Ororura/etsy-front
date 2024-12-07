@@ -10,6 +10,10 @@ const SendMessage: FC = () => {
   const stompClient = useStompClient();
 
   const handlerSendMessage: SubmitHandler<MessageType> = async (data) => {
+    data.type = "WEB";
+    if (room != null) {
+      data.room = room;
+    }
     const payload = JSON.stringify(data);
     if (stompClient) {
       stompClient.publish({ destination: `/app/send/${room}`, body: payload });

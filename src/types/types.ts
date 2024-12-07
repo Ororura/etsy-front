@@ -1,7 +1,8 @@
 type MessageType = {
   content: string;
-  room: string;
+  type: string;
   sender: string;
+  room: string;
 };
 
 export type { MessageType };
