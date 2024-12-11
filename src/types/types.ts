@@ -6,4 +6,8 @@ type MessageType = {
   url: string | null;
 };
 
-export type { MessageType };
+type LogType = {
+  link: string;
+};
+
+export type { MessageType, LogType };

@@ -4,15 +4,32 @@ import axios, {
   RawAxiosRequestHeaders,
 } from "axios";
 import { MessageType } from "../../types";
+import { LogType } from "../../types/types";
 
 const client = axios.create({
-  baseURL: "http://62.60.237.82:8080",
+  baseURL: import.meta.env.VITE_SERVER,
 });
 
 const config: AxiosRequestConfig = {
   headers: {
     Accept: "application/json",
   } as RawAxiosRequestHeaders,
+};
+
+
+const logService = {
+  createLog: async (log: LogType) => {
+    try {
+      const response: AxiosResponse<LogType> = await client.post(
+        "/logs/create",
+        log,
+        config
+      );
+      return response;
+    } catch (e) {
+      console.error(e);
+    }
+  },
 };
 
 const messageService = {
@@ -36,4 +53,4 @@ const messageService = {
   },
 };
 
-export { messageService };
+export { messageService, logService };

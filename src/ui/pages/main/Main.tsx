@@ -1,12 +1,11 @@
 import { FC } from "react";
-import { SendMessage } from "../../components/sendMessage";
+import { CreateLog } from "../../components/createLog";
+import { useSearchParams } from "react-router";
 
 const Main: FC = () => {
-  return (
-    <div>
-      <SendMessage />
-    </div>
-  );
+  const [searchParams] = useSearchParams();
+  const url = searchParams.get("name");
+  return <>{url && <CreateLog url={url} />}</>;
 };
 
 export { Main };
