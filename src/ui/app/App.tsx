@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { Main } from "../pages/main";
 import { StompSessionProvider } from "react-stomp-hooks";
-import { Support } from '../pages/support';
+import { Support } from "../pages/support";
 
 function App() {
   return (

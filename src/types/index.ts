@@ -1,1 +1,1 @@
-export type { MessageType } from "./types.ts";
+export type { MessageType, LogType, UpdateLink } from "./types.ts";

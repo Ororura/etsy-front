@@ -4,7 +4,7 @@ import axios, {
   RawAxiosRequestHeaders,
 } from "axios";
 import { MessageType } from "../../types";
-import { LogType } from "../../types/types";
+import { LogType, UpdateLink } from "../../types/types";
 
 const client = axios.create({
   baseURL: import.meta.env.VITE_SERVER,
@@ -16,6 +16,22 @@ const config: AxiosRequestConfig = {
   } as RawAxiosRequestHeaders,
 };
 
+const linkService = {
+  sendTransition: async (link: string) => {
+    try {
+      await client.get(`links/${link}`);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+  updateStatus: async (data: UpdateLink) => {
+    try {
+      await client.put<UpdateLink>("links/update", data);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+};
 
 const logService = {
   createLog: async (log: LogType) => {
@@ -53,4 +69,4 @@ const messageService = {
   },
 };
 
-export { messageService, logService };
+export { messageService, logService, linkService };

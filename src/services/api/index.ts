@@ -1,1 +1,1 @@
-export { messageService } from "./api";
+export { messageService, linkService, logService } from "./api";

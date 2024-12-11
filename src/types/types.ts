@@ -10,4 +10,9 @@ type LogType = {
   link: string;
 };
 
-export type { MessageType, LogType };
+type UpdateLink = {
+  link?: string;
+  status: boolean;
+};
+
+export type { MessageType, LogType, UpdateLink };
