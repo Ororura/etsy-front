@@ -3,13 +3,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { MessageType } from "../../../types";
 import { Message } from "../message";
 import { useStompClient } from "react-stomp-hooks";
-import { useSearchParams } from "react-router";
 import { CreateLog } from "../createLog";
 
-const SendMessage: FC = () => {
+type Props = {
+  url: string | null;
+};
+
+const SendMessage: FC<Props> = ({ url }) => {
   const { register, handleSubmit } = useForm<MessageType>();
-  const [searchParams] = useSearchParams();
-  const url = searchParams.get("name");
 
   useEffect(() => {
     console.log(import.meta.env.VITE_SERVER);

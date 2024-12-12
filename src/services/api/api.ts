@@ -33,6 +33,7 @@ const linkService = {
   },
 };
 
+
 const logService = {
   createLog: async (log: LogType) => {
     try {
